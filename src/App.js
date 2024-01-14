@@ -11,6 +11,7 @@ function App() {
   const [imageURL, setImageURL] = useState(null);
   const [results, setResults] = useState([]);
   const imageRef = useRef();
+  
   const loadModel = async () => {
     setIsModelLoading(true);
     try {
@@ -42,7 +43,7 @@ function App() {
     loadModel();
   }, []); /**passing and empty array as a set of dependencies bcz i want this model to be loaded only the first time */
   if (isModelLoading) {
-    return <h2>Model Loading...</h2>;
+    return <h2 className="text-white">Model Loading...</h2>;
   }
   console.log(results)
   return (
@@ -71,34 +72,38 @@ function App() {
               className="uploadInput file-input file-input-bordered file-input-accent w-full max-w-xs"
               onChange={uploadImage}
             />
+            
           </div>
         </div>
       </div>
       <div className="mainWrapper">
-        <div className="mainContent">
-          <div className="imageHolder pb-8">
-            {imageURL && (
-              <img
-                src={imageURL}
-                alt="Upload Preview"
-                crossOrigin="anonymous"
-                ref={imageRef}
-              />
-            )}
+        <div className="mainContent pl-52">
+          <div class="card w-96 glass gdiv">
+           
+              <div className="imageHolder pb-8">
+                {imageURL && (
+                  <img
+                    src={imageURL}
+                    alt="Upload Preview"
+                    crossOrigin="anonymous"
+                    ref={imageRef}
+                  />
+                )}
+              </div>
+           
           </div>
           {results.length > 0 && (
             <div className="resultsHolder">
               {results.map((result, index) => {
                 return (
-                  <div
-                    className="result "
-                    key={result.className}
-                  >
+                  <div className="result " key={result.className}>
                     <span className="name">{result.className}</span>
                     <span className="confidence">
                       Confidence level: {(result.probability * 100).toFixed(2)}%{" "}
                       {index === 0 && (
-                        <span className="bestGuess">Best Guess</span>
+                        <span className="bestGuess font-bold    ">
+                          Best Guess
+                        </span>
                       )}
                     </span>
                   </div>
@@ -109,7 +114,7 @@ function App() {
         </div>
         {imageURL && (
           <button
-            class="ibtn btn  btn-primary uppercase text-white font-bold bg-gradient-to-r from-indigo-500 ..."
+            class="pt-2 ibtn font-bold btn  bg-gradient-to-r from-indigo-500 via-purple-400 to-pink-300 ..."
             onClick={identify}
           >
             Identify Image
