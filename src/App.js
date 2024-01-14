@@ -10,8 +10,10 @@ function App() {
   const [model, setModel] = useState(null);
   const [imageURL, setImageURL] = useState(null);
   const [results, setResults] = useState([]);
+  const[history,setHistory] = useState([]);
+  const MAX_HISTORY_LENGTH = 10;
   const imageRef = useRef();
-  
+  const textInputRef = useRef()
   const loadModel = async () => {
     setIsModelLoading(true);
     try {
@@ -25,6 +27,7 @@ function App() {
   };
   /**arrow function for image url */
   const uploadImage = (e) => {
+    
     const { files } = e.target;
     if (files.length > 0) {
       const url = URL.createObjectURL(files[0]);
@@ -35,13 +38,25 @@ function App() {
     /**destructuring the fiels from event dot target*/
   };
   const identify=async()=>{
+     textInputRef.current.value = ""
     const results = await model.classify(imageRef.current)
   setResults(results)
+  }
+  const handleOnChange = (e) =>{
+setImageURL(e.target.value)
+setResults([])
   }
   /**call back function */
   useEffect(() => {
     loadModel();
   }, []); /**passing and empty array as a set of dependencies bcz i want this model to be loaded only the first time */
+useEffect(() =>{
+  if(imageURL){
+    setHistory([imageURL, ...history])
+  }
+},[imageURL])
+
+
   if (isModelLoading) {
     return <h2 className="text-white">Model Loading...</h2>;
   }
@@ -56,7 +71,7 @@ function App() {
           <div class="max-w-md">
             <h1 class="text-5xl font-bold text-white ">
               Hello !{" "}
-              <span className="text-transparent  bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-300 to-pink-400 ... ">
+              <span className=" text-transparent  bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-300 to-pink-400 ... ">
                 Test Your Image
               </span>
             </h1>
@@ -72,25 +87,30 @@ function App() {
               className="uploadInput file-input file-input-bordered file-input-accent w-full max-w-xs"
               onChange={uploadImage}
             />
-            
+            <h1 className="text-white">Or</h1>
+            <input
+              type="text"
+              className="pl-2 uploadInput file-input file-input-bordered file-input-accent w-full max-w-xs"
+              placeholder="Paste image URL"
+              ref={textInputRef}
+              onChange={handleOnChange}
+            />
           </div>
         </div>
       </div>
       <div className="mainWrapper">
         <div className="mainContent pl-52">
           <div class="card w-96 glass gdiv">
-           
-              <div className="imageHolder pb-8">
-                {imageURL && (
-                  <img
-                    src={imageURL}
-                    alt="Upload Preview"
-                    crossOrigin="anonymous"
-                    ref={imageRef}
-                  />
-                )}
-              </div>
-           
+            <div className="imageHolder pb-8">
+              {imageURL && (
+                <img
+                  src={imageURL}
+                  alt="Upload Preview"
+                  crossOrigin="anonymous"
+                  ref={imageRef}
+                />
+              )}
+            </div>
           </div>
           {results.length > 0 && (
             <div className="resultsHolder">
@@ -121,6 +141,26 @@ function App() {
           </button>
         )}
       </div>
+      {history.length > 0 && (
+        <div className="recentPredictions ">
+          <h2 className="font-bold   hh ">
+            Recent Predicted Images
+          </h2>
+          <div className="recentImages">
+            {history.slice(0, MAX_HISTORY_LENGTH).map((image, index) => {
+              return (
+                <div className="recentPrediction " key={`${image}${index}`}>
+                  <img
+                    src={image}
+                    alt="Recent Prediction"
+                    onClick={() => setImageURL(image)}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
