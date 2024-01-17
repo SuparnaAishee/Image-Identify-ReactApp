@@ -48,13 +48,14 @@ border-radius: 2%;
 }
 
 .resultsHolder {
-    padding-left: 40px;
-width: 40%;
+   
+    
+     width: 50%;
     .result {
         border: 1px solid #af54ff;
         margin: 0 0 10px;
         padding: 10px;
-        
+       
         &:first-of-type {
             border-color: #333;
           background-color: #333;
@@ -91,10 +92,11 @@ color: #fff;
     @media (max-width: 800px) {
         flex-direction: column;
     }
+   
 }
 .gdiv{
   object-fit: cover;
-  width: 45%;
+  
 }
  
 
@@ -147,6 +149,6 @@ color: #fff;
         }
     }
 }
-.hh{
-    color: #df4ffc;
+.th{
+    color: #e24ffc;
 }
