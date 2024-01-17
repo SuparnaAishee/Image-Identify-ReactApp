@@ -84,7 +84,8 @@ useEffect(() =>{
               type="file"
               accept="image/*"
               capture="camera"
-              className="uploadInput file-input file-input-bordered file-input-accent w-full max-w-xs mb-4 sm:mb-6"
+              className="uploadInput file-input file-input-bordered file-input-accent 
+                w-full max-w-xs mb-4 sm:mb-6"
               onChange={uploadImage}
             />
             <h1 className="text-white mb-2 sm:mb-4">Or</h1>
@@ -144,7 +145,7 @@ useEffect(() =>{
         )}
       </div>
       {history.length > 0 && (
-        <div className="recentPredictions">
+        <div className="recentPredictions border-t-2 border-solid border-violet-500">
           <h2 className="font-bold th text-center mb-4 sm:mb-6">
             Recent Predicted Images
           </h2>
